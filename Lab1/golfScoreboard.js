@@ -15,9 +15,11 @@ function Tournament(name,year,award,yardage,par,round,players) {
   this.yardage = yardage,
   this.par=par,
   this.round = round,
-  this.players = JSON.parse(players)
+  this.players = players,
+  this.printTournament = function(){
+    console.log(this.name);
+  }
 }
-
 
 
 
@@ -48,25 +50,24 @@ var inputData = {
 
 var inputStringData = JSON.stringify(inputData);
 
-
-function golfParser( input){
-  console.log("type of input" + typeof input);
+function golfParser(input){
   var parsedData = JSON.parse(input);
-  console.log("parsed data");
-  console.log(parsedData);
-
-  console.log(parsedData.tournament.players);
-  return parsedData;
+  var tour = parsedData.tournament;
+  var players = parsedData.tournament.players;
+  var playersArray = new Array();
+  for(x in players){
+    var playerObject = new Player(players[x].lastname,players[x].firstinitial,players[x].score,players[x].hole);
+    playersArray.push(playerObject);
+  }
+  return new Tournament(tour.name,tour.year,tour.award,tour.yardage,tour.par,tour.round,playersArray);
 }
 
 function testcase1(inputData){
   console.log("running test case 1 : check type of object passed into parser and log the returned data (parsed json into a js object)")
-  console.log("typeof inputData : " + typeof inputData);
-  console.log("parser : ");
-  var t = golfParser(inputData);
-  console.log(t.name);
-  var Players = t.players;
-  console.log(t.players);
+  var tournamentObject = golfParser(inputData);
+  console.log(tournamentObject.constructor)
+  console.log(tournamentObject.name);
+  console.log(tournamentObject.players[0].sayName());
 }
 
 testcase1(inputStringData);

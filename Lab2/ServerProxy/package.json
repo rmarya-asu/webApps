@@ -1,0 +1,14 @@
+{
+  "name": "serverproxy",
+  "version": "1.0.0",
+  "description": "For this lab you will construct a simple web proxy server in NodeJS, should serve GET requests. ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ruthvik Arya",
+  "license": "ISC",
+  "dependencies": {
+    "yargs": "^8.0.2"
+  }
+}

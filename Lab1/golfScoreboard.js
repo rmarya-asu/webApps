@@ -39,6 +39,7 @@ function Player(lastname, firstinitial, score, hole) {
       }
       this.score = score;
       this.nextHole(); // to update the hole number after posting the score (managing 'finished')
+      return "score posted -> check leaderboard for updates"
     }
     else{
       return "NOT a number"
@@ -63,14 +64,17 @@ function Tournament(input) {
   this.par = tour.par;
   this.round = tour.round;
   this.players = playersArray;
+  this.award = tour.award;
 
   myEmitter.on('playerFinished', () => {
     //one player has finished posting his scores. can we check if all the players have finished? and trigger next event?
     //value of this is right... so i can continue.
+    console.log("player has finished, checking all players if they have finished");
     for (t in this.players){
       //how to check if all players finished??
       if(this.players[t].getHole() <18){
-        return ;
+        console.log("atleast 1 player hasnt finished");
+        return "score posted";
       }
     }
     //all players have completed.
@@ -85,11 +89,19 @@ function Tournament(input) {
     }
     else{
       this.round ++;
+      //resetting holes to 0 if round is completed
+      for(y in this.players){
+        this.players[y].hole = 0;
+      }
+      return "round finished"
     }
   });
 
   myEmitter.on('TournamentFinished',()=>{
+    console.log("tournament has finished");
+    console.log('-------------------------');
     var winner = this.getWinner();
+    console.log("WINNER -> " +winner.firstinitial + "winner");
     this.setWinnings();
   });
 
@@ -103,6 +115,7 @@ function Tournament(input) {
     this.leaderboard();
     return this.players[0]; //should return last name
   }
+
   this.setWinnings = function(){
     this.leaderboard();//just to sort the players again.
     this.players[0].winnings = this.award *0.5;
@@ -224,7 +237,7 @@ var inputData = {
     yardage: 6905,
     award: 100000,
     par: 69,
-    round: 1,
+    round: 4,
     players: [
       {
         lastname: "Player",
@@ -245,13 +258,13 @@ var inputData = {
         lastname: "Player",
         firstinitial: "4",
         score: -2,
-        hole: 4
+        hole: 17
       },
       {
         lastname: "Player",
         firstinitial: "5",
         score: -2,
-        hole: 8
+        hole: 17
       }
     ]
   }
@@ -263,18 +276,12 @@ var inputStringData = JSON.stringify(inputData);
 function testcase1(inputData) {
   console.log("running test case 1 : check type of object passed into parser and log the returned data (parsed json into a js object)")
   var tournamentObject = new Tournament(inputData);
-  //console.log("constructor: " + tournamentObject.constructor)
-  // console.log("tournament Name: " + tournamentObject.name);
-  // tournamentObject.players[0].sayName();
-  // console.log("the leaderboard "+tournamentObject.leaderboard());
-  // console.log("is it completed? "+tournamentObject.isRoundCompleted());
-  // console.log("project score of Montgomerie :" + tournamentObject.projectScoreByIndividual("Fulke", "S"));
-  // console.log("project score of Montgomerie :" + tournamentObject.projectScoreByIndividual("Mont", "C"));
-  // console.log("project score of Fulke :" + tournamentObject.projectScoreByIndividual("Fulke", "S"));
-  // console.log("project score of Mont :" + tournamentObject.projectScoreByHole("Montgomerie", "C"));
-  //
-   console.log(tournamentObject.projectedLeaderboard(tournamentObject.projectScoreByXXX.bind(tournamentObject)));
-  // // tournamentObject.projectScoreByHole("Montgomerie", "C");
+  console.log("constructor: " + tournamentObject.constructor)
+  console.log("tournament Name: " + tournamentObject.name);
+  tournamentObject.players[0].sayName();
+  console.log("the leaderboard "+tournamentObject.leaderboard());
+  console.log("is it completed? "+tournamentObject.isRoundCompleted());
+  console.log("project score of Montgomerie :" + tournamentObject.projectScoreByIndividual("Player", "1"));
 }
 
 function testcase2(inputData){
@@ -321,13 +328,21 @@ function testcase6(inputData){
 }
 
 function testcase7(inputData){
-  console.log("running testcase7 : postScore()");
+  console.log("running testcase7 : postScore() -> adding them in this value we can test both player finising a round -> Tournament finishing.");
   var t = new Tournament(inputData);
   t.printLeaderboard();
   console.log(t.players[0].postScore(-3));
-  // t.printLeaderboard();
-  // console.log(t.players[1].postScore(-4));
-  // t.printLeaderboard();
+  t.printLeaderboard();
+  console.log(t.players[1].postScore(-4));
+  t.printLeaderboard();
+  console.log(t.players[2].postScore(1));
+  t.printLeaderboard();
+  console.log(t.players[3].postScore(-2));
+  t.printLeaderboard();
+  console.log(t.players[2].postScore(-3));
+  t.printLeaderboard();
+
+
 }
 // testcase1(inputStringData);
 // testcase2(inputStringData);
@@ -335,4 +350,4 @@ function testcase7(inputData){
 // testcase4(inputStringData);
 // testcase5(inputStringData);
 // testcase6(inputStringData);
-testcase7(inputStringData);
+//testcase7(inputStringData);

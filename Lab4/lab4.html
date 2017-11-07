@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Clue Game</title>
+  <script>
+    var init = function() {
+      if (localStorage.getItem('clueUserScore') && localStorage.getItem('clueComputerScore')) {
+        document.getElementById('gameScore').hidden = false;
+        document.getElementById('userSCORE').innerText = localStorage.getItem('clueUserScore');
+        document.getElementById('compSCORE').innerText = localStorage.getItem('clueComputerScore');
+      } else {
+        document.getElementById('gameScore').hidden = true;
+      }
+
+      document.getElementById('game').hidden = true;
+      //check for localStorage -> game was in progress earlier...
+      document.getElementById('gameSummary').hidden = true;
+      document.getElementById('output').hidden = true;
+      document.getElementById('userSuggestion').hidden = true;
+
+    }
+  </script>
+</head>
+
+<body onload="init()">
+  <header>
+    <div class="Heading">
+      <h1>CLUE</h1>
+      <h2 id="gameScore">GAME SCORE SO FAR  USER : <strong><span id="userSCORE"></span></strong> COMPUTER: <strong><span id="compSCORE"></span></strong></h2>
+    </div>
+    <div class="gameInformation">
+      <!--TODO: make this content dynamic  -->
+      Rooms: Kitchen, Study, Living Room, Dining Room, Library</br>
+      Guests: Mrs. Peacock, Mrs. Green, Miss Scarlet, Colonel Mustard, Professor Plum</br>
+      Weapons: Pistol, Knife, Wrench, Lead Pipe, Candlestick</br>
+    </div>
+    <div class="username" id="usernameDiv">
+      <!--TODO: regular expression to validate input -->
+      </br>
+      <input required id="username" type="text" placeholder="input name here">
+      <input id="startButton" type="submit" name="" value="go" onclick="gameStart()">
+    </div>
+  </header>
+  <main>
+    <div class="game" id="game">
+      <div class="gameHeader">
+        <hr>
+        <p>Hello <span id="user">user</span> you hold the following cards <strong><span id="user-cards"></span></strong></p>
+      </div>
+      <div class="userInput">
+        ROOM:
+        <input id="roomGuess" type="text" list="roomlist" name="roomlist" value="" placeholder="Guess the Room">
+        <datalist id="roomlist"></datalist><br> GUEST:
+        <input id="guestGuess" type="text" list="guestlist" name="guestlist" value="" placeholder="Guess the Guest">
+        <datalist id="guestlist"></datalist><br> WEAPON:
+        <input id="weaponGuess" type="text" list="weaponlist" name="weaponlist" value="" placeholder="Guess the Weapon">
+        <datalist id="weaponlist"></datalist><br>
+        <input type="submit" id="GUESS!!" name="" value="GUESS!!" onclick="guess()">
+      </div>
+    </div>
+
+    <div class="output" id="output">
+      <div class="userlost" id="userLOST">
+        <p>Sorry that was an incorrect guess! The Computer holds the card for <span id="computerOut">Mrs. Peacock</span>
+          </br>Click to continue<input type="submit" value="continue" onclick="computerTurn()">
+      </div>
+      <div class="userwon" id="userWON">
+        <p>You guessed it absolutely right. good job. Updating score!</p>
+        </br>Click to start a new game<input type="submit" value="new game" onclick="resetGame()">
+      </div>
+      <div class="computerwon" id="computerWON">
+        <p>Computer guessed it right. YOU LOSE!! Updating score!</p>
+        </br>Click to start a new game<input type="submit" value="new game" onclick="resetGame()">
+      </div>
+      <div class="computerlost" id="computerLOST">
+        <p>The Computer made an incorrect guess! You hold the card for <span id="userOut">Library.</span></p>
+        </br>Click to continue<input type="submit" value="continue" onclick="userTurn()">
+      </div>
+      <div class="userSuggestion" id="userSuggestion">
+        <p>Please make another guess</p>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <hr>
+
+    <div id="gameSummary">
+      <aside>
+        <details>
+          <summary>History</summary>
+          <ul id="gameMoves" class="moves">
+          </ul>
+        </details>
+      </aside>
+    </div>
+    <div id="computerStats" class="computerStats">
+      <input type="submit" name="" value="show Record" onclick="showComputerRecord()">
+      <table id="table">
+        <tr id = "tableHeader">
+          <th>VS</th>
+          <th>Time</th>
+          <th>user-Comp</th>
+        </tr>
+
+    </div>
+  </footer>
+  <script src="./lab4.js"></script>
+</body>
+
+</html>

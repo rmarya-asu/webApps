@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>ADMIN PAGE</h1>
+    <form method="post" action="/admin/addbook">
+      <div class="input-group">
+        <span class="input-group-addon"></span>
+        <input type="number" class="form-control" placeholder="id" name="id">
+        <input type="text" class="form-control" placeholder="title" name="title">
+        <input type="text" class="form-control" placeholder="author" name="author">
+        <input type="number" class="form-control" placeholder="price" name ="price">
+      </div>
+      <input type="submit" name="Add book" value="Add Book">
+    </form>
+    <br><a href="/admin/logout">LOGOUT</a>
+
+  <h1>Books<h1>
+    <h4>please refresh page to get the new books added</h4>
+  <table cellpadding="10">
+    <thead>
+    <th>ID</th>
+    <th>Name</th>
+    <th>AUthOR</th>
+    <th>Price</th>
+    <th>More Info</th>
+  </thead>
+  <tbody>
+    <% for (var i=0;i<books.length;i++){%>
+    <tr>
+      <td><%=books[i].id%></td>
+      <td><%=books[i].title%></td>
+      <td><%=books[i].author%></td>
+      <td><%=books[i].price%></td>
+      <td><a href="/admin/delete/<%=books[i].id%>">DELETE</a>
+    </tr>
+     <%}%>
+  </tbody>
+  </table>
+</body>
+</html>

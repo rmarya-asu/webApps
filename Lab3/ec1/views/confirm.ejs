@@ -1,0 +1,37 @@
+</head>
+<body>
+
+<p>Purchase Successful</p>
+
+<table border="0">
+	<tbody>
+		<tr>
+			<td>Customer:</td>
+			<td><%=customer.name%></td>
+		</tr>
+		<tr>
+			<td><span>Card:</span></td>
+			<td><%=customer.cart.cardType%></td>
+		</tr>
+		<tr>
+			<td>Card number:</td>
+			<td><%=customer.cart.card%></td>
+		</tr>
+		<tr>
+			<td>Amount:</td>
+			<td>$<%=customer.cart.total%></td>
+		</tr>
+		<tr>
+			<td>Express Delivery:</td>
+			<td>
+
+				<%=customer.cart.exp%>
+			</td>
+		</tr>
+	</tbody>
+</table>
+	<br><a href="/list">BUY MORE BOOKS</a>
+	<br><a href="/landing">LOGOUT</a>
+
+
+</body></html>

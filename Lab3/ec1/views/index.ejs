@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Books</title>
+</head>
+
+<body>
+  <H2><%=header%></H2>
+  <br/>
+  <table cellpadding="10">
+    <thead>
+    <th>Name</th>
+    <th>AUthOR</th>
+    <th>Price</th>
+    <th>More Info</th>
+  </thead>
+  <tbody>
+    <% for (var i=0;i<books.length;i++){%>
+    <tr>
+      <td><%=books[i].title%></td>
+      <td><%=books[i].author%></td>
+      <td><%=books[i].price%></td>
+      <td><a href="/books/<%=books[i].id%>">Get Info</a>
+    </tr>
+     <%}%>
+  </tbody>
+  </table>
+</body>I want to <a href="/login">purchase something</a>!
+click here to go to admin page<a href="/admin/signin">ADMIN LOGIN PAGE</a>
+</html>

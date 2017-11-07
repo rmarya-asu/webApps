@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>
+    Ruthvik Arya's Weather App
+  </title>
+  <link rel="stylesheet" type="text/css" href="./lab5.css" />
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+</head>
+
+<body onload="init()">
+  <header>
+    <h1>Weather App</h1>
+  </header>
+  <main>
+    <!-- // the table data -->
+    <div class='weatherData table-responsive'>
+      <table class='table'>
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Time in dd:mm:yyyy::hh:mm:ss </th>
+            <th>Temperature in Celsius</th>
+            <th>Humidity in %</th>
+            <th>Wind Speed in miles per hour</th>
+            <th>Cloudiness in %</th>
+          </tr>
+        </thead>
+        <tbody id='tbody'>
+          <!-- <td>
+            <img
+              [src]='product.imageUrl'
+              [title]='product.productName'
+              [style.width.px]='imageWidth'
+              [style.margin.px]='imageMargin'
+              *ngIf="showImage"
+            ></td> -->
+          <!-- <td>{{ product.productName }}</td>
+          <td>{{ product.productCode | lowercase}}</td>
+          <td>{{ product.releaseDate }}</td>
+          <td>{{ product.price | currency:'USD':true:'1.2-2'}}</td>
+          <td>{{ product.starRating }}</td> -->
+        </tbody>
+      </table>
+      <div class="addThirdCity">
+        <p>Please Select the Third City <input id="cities-list" list="cities" name="cities"></p>
+        <datalist id="cities">
+      <option value="Manchester">
+      <option value="Oslo">
+      <option value="Singapore">
+      <option value="Cape Town">
+      <option value="Prague">
+      </datalist>
+      </div>
+      <button class="btn btn-info" type="button" onclick='calculateStats()'>Stats</input>
+
+    <article class="weatherSummary">
+      <!-- //the cost function -->
+    </article>
+
+  </main>
+  <footer>
+    </footer>
+    <script src="./lab5.js" ></script>
+
+  </body>
+</html>

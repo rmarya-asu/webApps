@@ -74,8 +74,9 @@ function populateTable(city) {
   let td = document.createElement('TD');
   td.innerText = cityWeather.name + ',' + cityWeather.country;
   let td1 = document.createElement('TD');
-  //have a problem with date time here. fix it. 
-  td1.innerText =time.getUTCFullYear() + ":" + time.getMonth() + ":" + time.getDate();
+  //have a problem with date time here. fix it.
+  console.log(cityWeather.time);
+  td1.innerText =time.getDate() + ":" + time.getMonth() + ":" + time.getUTCFullYear()+':'+time.getHours()+':'+time.getMinutes()+':'+time.getSeconds();
   let td2 = document.createElement('TD');
   td2.innerText = cityWeather.temp;
   let td3 = document.createElement('TD');

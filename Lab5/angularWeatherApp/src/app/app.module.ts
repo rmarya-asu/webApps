@@ -2,12 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { TableComponent } from './table/table/table.component';
+import { WeatherTableComponent } from './weather-table/weather-table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TableComponent
+    WeatherTableComponent
   ],
   imports: [
     BrowserModule

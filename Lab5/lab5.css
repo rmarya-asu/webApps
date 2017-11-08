@@ -1,6 +1,26 @@
+body{
+  background-image: url('./assets/back1.png');
+  color:white;
+}
+h1{
+  color: white;
+  font-weight: bolder;
+}
+.weatherData{
+  padding-top: 200px;
+}
 table{
   border: black;
+
 }
+
 thead{
-  background: lightBlue;
+  background: crimson;
+  font-weight: bold;
+}
+
+td{
+  font-size: 16;
+  color: white;
+  font-weight: bold;
 }

@@ -1,0 +1,10 @@
+thead{
+  background: crimson;
+  font-weight: bold;
+}
+
+td{
+  font-size: 16;
+  color: white;
+  font-weight: bold;
+}

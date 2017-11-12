@@ -3,18 +3,21 @@
 var Weather = function(city, country,time, temp, humidity, windSpeed, cloudiness) {
   this.name = city;
     this.country = country;
-    this.temp = parseInt(temp) - 273;
-    this.humidity = humidity;
-    this.wind = windSpeed;
-    this.cloudiness = cloudiness;
+    this.temp = parseInt(temp);
+    this.humidity = parseInt(humidity);
+    this.wind = parseInt(windSpeed);
+    this.cloudiness = parseInt(cloudiness);
     this.time = time;
     function setFormats() {
 
     }
 };
 
-function extractWeatherData() {
-
+function extractWeatherData(place) {
+  place.fullName = place.name + ',' + place.country;
+  place.tempC = place.temp - 273;
+  place.windMPH = place.wind * (25/11);
+  return place;
 }
 
 function getRequestObject() {
@@ -66,23 +69,25 @@ function storageAvailable(type) {
 function populateTable(city) {
 
   var cityWeather = new Weather(city.name, city.sys.country, city.dt,city.main.temp, city.main.humidity, city.wind.speed,city.clouds.all);
+  var cityWeather2 = extractWeatherData(cityWeather);
   var tbody = document.getElementById('tbody');
   console.log(city.clouds.all);
   var time = new Date(city.dt);
   console.log(cityWeather);
   let tr = document.createElement('TR');
   let td = document.createElement('TD');
+  td.className = "mdl-data-table__cell--non-numeric";
   td.innerText = cityWeather.name + ',' + cityWeather.country;
   let td1 = document.createElement('TD');
   //have a problem with date time here. fix it.
   console.log(cityWeather.time);
   td1.innerText =time.getDate() + ":" + time.getMonth() + ":" + time.getUTCFullYear()+':'+time.getHours()+':'+time.getMinutes()+':'+time.getSeconds();
   let td2 = document.createElement('TD');
-  td2.innerText = cityWeather.temp;
+  td2.innerText = cityWeather.tempC;
   let td3 = document.createElement('TD');
   td3.innerText = cityWeather.humidity;
   let td4 = document.createElement('TD');
-  td4.innerText = cityWeather.wind;
+  td4.innerText = cityWeather.windMPH;
   let td5 = document.createElement('TD');
   td5.innerText = cityWeather.cloudiness;
   tr.appendChild(td);tr.appendChild(td1);tr.appendChild(td2);tr.appendChild(td3);tr.appendChild(td4);tr.appendChild(td5);

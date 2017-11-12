@@ -2,73 +2,96 @@
 <html>
 
 <head>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
   <meta charset="utf-8">
   <title>
     Ruthvik Arya's Weather App
   </title>
-
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  <!-- Material Design Lite -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   <link rel="stylesheet" type="text/css" href="./lab5.css" />
 </head>
 
 <body onload="init()">
-  <header >
-    <h1 align="center">Weather App</h1>
-  </header>
-  <main>
-    <!-- // the table data -->
-    <div class='weatherData table-responsive'>
-      <table class='table'>
-        <thead>
-          <tr>
-            <th>City</th>
-            <th>Time in dd:mm:yyyy::hh:mm:ss </th>
-            <th>Temperature in Celsius</th>
-            <th>Humidity in %</th>
-            <th>Wind Speed in miles per hour</th>
-            <th>Cloudiness in %</th>
-          </tr>
-        </thead>
-        <tbody id='tbody'>
-          <!-- <td>
-            <img
-              [src]='product.imageUrl'
-              [title]='product.productName'
-              [style.width.px]='imageWidth'
-              [style.margin.px]='imageMargin'
-              *ngIf="showImage"
-            ></td> -->
-          <!-- <td>{{ product.productName }}</td>
-          <td>{{ product.productCode | lowercase}}</td>
-          <td>{{ product.releaseDate }}</td>
-          <td>{{ product.price | currency:'USD':true:'1.2-2'}}</td>
-          <td>{{ product.starRating }}</td> -->
-        </tbody>
-      </table>
-      <div class="addThirdCity">
-        <p>Please Select the Third City <input id="cities-list" list="cities" name="cities"></p>
-        <datalist id="cities">
-      <option value="Manchester">
-      <option value="Oslo">
-      <option value="Singapore">
-      <option value="Cape Town">
-      <option value="Prague">
-      </datalist>
+  <!-- Uses a header that scrolls with the text, rather than staying
+  locked at the top -->
+  <!--   -->
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header ">
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title  mdl-layout__header--scroll"><h1>Weather</h1></span>
+        <!-- Add spacer, to align navigation to the right -->
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation -->
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="">Home</a>
+          <a class="mdl-navigation__link" href="">About</a>
+        </nav>
       </div>
-      <button class="btn btn-info" type="button" onclick='calculateStats()'>Stats</input>
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">Weather</span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="">Phoenix</a>
+        <a class="mdl-navigation__link" href="">Bangalore</a>
+      </nav>
+    </div>
+    <main class="mdl-layout__content">
+      <div class="page-content">
+        <!-- PAGE CONTENT -->
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--6-col mdl-cell--9-col-tablet mdl-cell--12-col-phone">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">City</th>
+                  <th>Time</th>
+                  <th>Temp in cel</th>
+                  <th>Humidity %</th>
+                  <th>Wind Speed (mph)</th>
+                  <th>Cloudiness %</th>
+                </tr>
+              </thead>
+              <tbody id="tbody">
+              </tbody>
+            </table>
 
-    <article class="weatherSummary">
-      <!-- //the cost function -->
-    </article>
+          </div>
+          <div class="mdl-cell mdl-cell--3-col mdl-cell--6-col-tablet mdl-cell--6-col-phone">
+            <div class="mdl-textfield mdl-js-textfield">
+              <input class="mdl-textfield__input" list="cities" type="text" id="cities-list">
+              <datalist id="cities">
+                <option value="Manchester">
+                  <option value="Oslo">
+                    <option value="Singapore">
+                      <option value="Cape Town">
+                        <option value="Prague">
+              </datalist>
+              <label class="mdl-textfield__label" for="cities-list">Add Third City</label>
+            </div>
+            <div class="">
+              <!-- Colored FAB button with ripple -->
+              <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                <i class="material-icons">add</i>
+              </button>
+            </div>
+            <div class="">
+              <hr>
+              <!-- Accent-colored raised button with ripple -->
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                  Refresh Table Data
+              </button>
+            </div>
+          </div>
+          <div class="weatherSummary mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet">
+            <h5>Summary</h5>
+          </div>
+        <!-- /PAGE CONTENT -->
+      </div>
+      <script src="./lab5.js"></script>
+</body>
 
-  </main>
-  <footer>
-    </footer>
-    <script src="./lab5.js" ></script>
-
-  </body>
 </html>

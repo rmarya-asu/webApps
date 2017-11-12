@@ -1,12 +1,7 @@
 // 9c1cd66b77e2f2317d15fffb64eeef6e
 // 8988eae58b1eefdc66b197363ade25ab
 var WEATHER_DATA = [];
-var USER_PREF = {
-  temp: 'C',
-  wind: 'mph',
-  time: 'UTC'
-};
-
+var USER_PREF = {};
 const CITY_WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=';
 const API_KEY = '&APPID=9c1cd66b77e2f2317d15fffb64eeef6e';
 
@@ -14,22 +9,59 @@ var City_weather = function(city, country, time, temp, humidity, windSpeed, clou
   this.name = city;
   this.country = country;
   this.temp = parseInt(temp);
+  this.temp.toFixed(2);
   this.humidity = parseInt(humidity);
+  this.humidity.toFixed(2);
   this.wind = parseInt(windSpeed);
+  this.wind.toFixed(2);
   this.cloudiness = parseInt(cloudiness);
+  this.cloudiness.toFixed(2);
   this.time = time;
 };
 
 function extractWeatherData(place) {
   place.fullName = place.name + ',' + place.country;
-  place.tempC = place.temp - 273.15;
-  place.temp.toFixed(2);
-  place.tempC.toFixed(2);
-  place.windMPH = place.wind * (25 / 11);
-  place.windMPH.toFixed(2);
-  place.wind.toFixed(2);
+
+  if(USER_PREF.temp === 'Celsius'){
+    place.tempConverted = place.temp - 273.15;
+    let y = place.tempConverted;
+    y.toFixed(2);
+    place.tempConverted = y;
+  }
+  if(USER_PREF.temp === 'Farenheit'){
+    place.tempConverted = (place.temp *9/5) - 459.67;
+    let y = place.tempConverted;
+    y.toFixed(2);
+    place.tempConverted = y;
+  }
+  if(USER_PREF.temp === 'Kelvin'){
+    place.tempConverted = place.temp;
+    let y = place.tempConverted;
+    y.toFixed(2);
+    place.tempConverted = y;
+  }
+  if(USER_PREF.wind === 'kmph'){
+    place.windConverted = (place.wind) * 3.6;
+    let y = place.windConverted;
+    y.toFixed(2);
+    place.windConverted = y;
+  }
+  if(USER_PREF.wind === 'mph'){
+      place.windConverted = (place.wind) * 2.236;
+      let y = place.windConverted;
+      y.toFixed(2);
+      place.windConverted = y;
+  }
+  if(USER_PREF.wind === 'mps'){
+    place.windConverted = place.wind;
+    let y = place.windConverted;
+    y.toFixed(2);
+    place.windConverted = y;
+  }
   return place;
 }
+
+
 
 function getRequestObject() {
   if (window.XMLHttpRequest) {
@@ -79,7 +111,6 @@ function storageAvailable(type) {
 }
 
 function populateTable(city) {
-
   var cityWeather = new City_weather(city.name, city.sys.country, city.dt, city.main.temp, city.main.humidity, city.wind.speed, city.clouds.all);
   extractWeatherData(cityWeather);
   var tbody = document.getElementById('tbody');
@@ -95,18 +126,17 @@ function populateTable(city) {
   console.log(cityWeather.time);
   td1.innerText = time.getDate() + ":" + time.getMonth() + ":" + time.getUTCFullYear() + ':' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
   let td2 = document.createElement('TD');
-  let x = parseInt(cityWeather.tempC);
-  x.toFixed(2);
-  cityWeather.tempC = x;
-  td2.innerText = cityWeather.tempC;
+  let x = parseInt(cityWeather.tempConverted);
+   x.toFixed(2);
+  cityWeather.tempConverted = x;
+  td2.innerText = cityWeather.tempConverted;
   let td3 = document.createElement('TD');
   td3.innerText = cityWeather.humidity;
   let td4 = document.createElement('TD');
-  cityWeather.windMPH.toFixed(2);
-  let y = parseInt(cityWeather.windMPH);
+   let y = parseInt(cityWeather.windConverted);
   y.toFixed(2);
-  cityWeather.windMPH = y;
-  td4.innerText = cityWeather.windMPH;
+   cityWeather.windConverted = y;
+  td4.innerText = cityWeather.windConverted;
   let td5 = document.createElement('TD');
   td5.innerText = cityWeather.cloudiness;
   tr.appendChild(td);
@@ -123,10 +153,6 @@ function populateTableFromLocalStorage() {
   for (var index in WEATHER_DATA) {
     populateTable(WEATHER_DATA[index]);
   }
-}
-
-function calculateStats() {
-
 }
 
 function addButtonClicked(){
@@ -158,6 +184,7 @@ function emptyElement(element){
 
 function refresh(){
   WEATHER_DATA.sort();
+  convertToPrefs();
   emptyElement(document.getElementById('tbody'));
   // localStorage.setItem('weather', JSON.stringify(WEATHER_DATA));
   // populateTableFromLocalStorage();
@@ -172,6 +199,17 @@ function init() {
   });
   if (storageAvailable('localStorage')) {
     console.log('local storage is supported');
+    if (localStorage.getItem('USER_PREF')) {
+      USER_PREF = JSON.parse(localStorage.getItem('USER_PREF'));
+    }
+    else{
+       USER_PREF = {
+        temp: 'Farenheit',
+        wind: 'mph',
+        time: 'UTC'
+      }
+      localStorage.setItem('USER_PREF',JSON.stringify(USER_PREF));
+    }
     if (localStorage.getItem('weather')) {
       console.log('populating table from localStorage');
       populateTableFromLocalStorage();
@@ -191,4 +229,37 @@ function init() {
   } else {
     console.log('local storage is not supported');
   }
+}
+
+
+function restoreDefaults(){
+  USER_PREF = {
+    temp: 'Celsius',
+    wind: 'mph',
+    time: 'UTC'
+  };
+  if (storageAvailable('localStorage')) {
+    localStorage.setItem('USER_PREF',JSON.stringify(USER_PREF));
+  }
+  emptyElement(document.getElementById('tbody'));
+  init();
+  //convertToPrefs();
+}
+
+function updateUserPrefs(){
+  var temp = document.getElementById('temp-list').value;
+  var wind = document.getElementById('wind-list').value;
+  var date = document.getElementById('date-list').value;
+  if(temp === 'Celsius'){ USER_PREF.temp = 'Celsius'}
+  if( temp === 'Farenheit'){USER_PREF.temp = 'Farenheit'}
+  if(temp ==='Kelvin'){USER_PREF.temp = 'Kelvin'}
+  if(wind ==='MPH') {USER_PREF.wind = 'mph'}
+  if(wind ==='KMPH') {USER_PREF.wind = 'kmph'}
+  if(wind ==='MPS') {USER_PREF.wind = 'mps'}
+  if (storageAvailable('localStorage')) {
+    localStorage.setItem('USER_PREF',JSON.stringify(USER_PREF));
+  }
+  emptyElement(document.getElementById('tbody'));
+  init();
+    //default value is considered.
 }

@@ -40,7 +40,7 @@
           Temperature
           <input class="mdl-textfield__input" list="temp" type="text" id="temp-list">
           <datalist id="temp">
-           <option value="Celcius">
+           <option value="Celsius">
              <option value="Farenheit">
                <option value="Kelvin">
          </datalist>
@@ -57,20 +57,20 @@
         </a>
         <a class="mdl-navigation__link" href="">
           Wind Speed
-          <input class="mdl-textfield__input" list="wind" type="text" id="Wind-list" >
+          <input class="mdl-textfield__input" list="wind" type="text" id="wind-list" >
           <datalist id="wind">
             <option value="MPH">
-              <option value="KmPH">
+              <option value="KMPH">
                 <option value="MPS">
           </datalist>
         </a>
         <a class="mdl-navigation__link" href="">
           <!-- Primary-colored flat button -->
-          <button class="mdl-button mdl-js-button mdl-button--primary">
+          <button class="mdl-button mdl-js-button mdl-button--primary" onclick="updateUserPrefs()">
             Save Changes
             </button>
           <!-- Accent-colored flat button -->
-          <button class="mdl-button mdl-js-button mdl-button--accent">
+          <button class="mdl-button mdl-js-button mdl-button--accent" onclick="restoreDefaults()">
             Use Defaults
           </button>
         </a>
@@ -124,7 +124,62 @@
             </div>
           </div>
           <div class="weatherSummary mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet">
-            <h5>Summary</h5>
+            <!--  -->
+            <!-- Icon List -->
+<style>
+.demo-list-icon {
+  width: 300px;
+}
+.fireIcon {
+  width: 35px;
+  padding : 5px;
+}
+</style>
+<hr>
+<ul class="demo-list-icon mdl-list">
+  <li class="mdl-list__item">
+    <span class="mdl-list__item-primary-content">
+    <img class="fireIcon"  src = "./assets/fire.png" width="35px"></img>
+    Hottest City : <span id="hottestCity"></span>
+  </span>
+  </li>
+  <hr>
+  <li class="mdl-list__item">
+    <span class="mdl-list__item-primary-content">
+    <img class="fireIcon"  src = "./assets/water.png" width="35px"></img>
+    Humid City : <span id="humidCity"></span>
+  </span>
+  </li>
+  <hr>
+  <li class="mdl-list__item">
+    <span class="mdl-list__item-primary-content">
+    <img class="fireIcon"  src = "./assets/tempUp.png" width="35px"></img>
+    Average Temperature: <span id="avgTemp"></span>
+  </span>
+  </li>
+  <hr>
+  <li class="mdl-list__item">
+    <span class="mdl-list__item-primary-content">
+    <img class="fireIcon"  src = "./assets/avg_humid.png" width="35px"></img>
+    Average Humidity: <span id="avgHumidity"></span>
+  </span>
+  </li>
+  <hr>
+  <li class="mdl-list__item">
+    <span class="mdl-list__item-primary-content">
+    <img class="fireIcon"  src = "./assets/nice.ico" width="35px"></img>
+    Nicest City : <span id="nicestCity"></span>
+  </span>
+  </li>
+  <hr>
+  <li class="mdl-list__item">
+    <span class="mdl-list__item-primary-content">
+    <img class="fireIcon"  src = "./assets/bad.png" width="35px"></img>
+    Worst City : <span id="worstCity"></span>
+  </span>
+  </li>
+</ul>
+            <!--  -->
           </div>
           <!-- /PAGE CONTENT -->
         </div>

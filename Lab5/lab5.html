@@ -48,7 +48,7 @@
         </a>
         <a class="mdl-navigation__link" href="">
           Date and Time
-          <input class="mdl-textfield__input" list="time" type="text" id="date-list" >
+          <input class="mdl-textfield__input" list="time" type="text" id="dateTime-list" >
           <datalist id="time">
             <option value="UTC">
               <option value="LocalTime">
@@ -73,6 +73,13 @@
           <button class="mdl-button mdl-js-button mdl-button--accent" onclick="restoreDefaults()">
             Use Defaults
           </button>
+        </a>
+        <hr>
+        <a class="mdl-navigation__link" href="">
+          <h6>Current Settings</h6>
+          <br>TEMP in <span id="userTempSettings"></span>
+          <br>Wind Speed in <span id="userWindSettings"></span>
+          <br>Time in <span id="userTimeSettings"></span>
         </a>
       </nav>
     </div>

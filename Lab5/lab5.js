@@ -190,6 +190,12 @@ function refresh(){
   // populateTableFromLocalStorage();
 }
 
+function updateNavBarUserPrefs(){
+  document.getElementById('userTempSettings').innerHTML = USER_PREF.temp;
+  document.getElementById('userWindSettings').innerHTML = USER_PREF.wind;
+  document.getElementById('userTimeSettings').innerHTML = USER_PREF.time;
+}
+
 function init() {
   //check for localStorage -> if it exists, populate data in the table from the
   console.log('init module started');
@@ -208,11 +214,13 @@ function init() {
         wind: 'mph',
         time: 'UTC'
       }
+      //updateNavBarUserPrefs();
       localStorage.setItem('USER_PREF',JSON.stringify(USER_PREF));
     }
     if (localStorage.getItem('weather')) {
       console.log('populating table from localStorage');
       populateTableFromLocalStorage();
+      updateNavBarUserPrefs();
     } else {
       makeHttpCall(CITY_WEATHER_URL+'Phoenix'+ API_KEY, function(city1) {
         populateTable(JSON.parse(city1));
@@ -249,7 +257,7 @@ function restoreDefaults(){
 function updateUserPrefs(){
   var temp = document.getElementById('temp-list').value;
   var wind = document.getElementById('wind-list').value;
-  var date = document.getElementById('date-list').value;
+  var date = document.getElementById('dateTime-list').value;
   if(temp === 'Celsius'){ USER_PREF.temp = 'Celsius'}
   if( temp === 'Farenheit'){USER_PREF.temp = 'Farenheit'}
   if(temp ==='Kelvin'){USER_PREF.temp = 'Kelvin'}

@@ -1,22 +1,27 @@
 // 9c1cd66b77e2f2317d15fffb64eeef6e
 // 8988eae58b1eefdc66b197363ade25ab
-var Weather = function(city, country,time, temp, humidity, windSpeed, cloudiness) {
-  this.name = city;
-    this.country = country;
-    this.temp = parseInt(temp);
-    this.humidity = parseInt(humidity);
-    this.wind = parseInt(windSpeed);
-    this.cloudiness = parseInt(cloudiness);
-    this.time = time;
-    function setFormats() {
+var WEATHER_DATA = [];
+const CITY_WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=';
+const API_KEY = '&APPID=9c1cd66b77e2f2317d15fffb64eeef6e';
 
-    }
+var City_weather = function(city, country, time, temp, humidity, windSpeed, cloudiness) {
+  this.name = city;
+  this.country = country;
+  this.temp = parseInt(temp);
+  this.humidity = parseInt(humidity);
+  this.wind = parseInt(windSpeed);
+  this.cloudiness = parseInt(cloudiness);
+  this.time = time;
+
+  function setFormats() {
+
+  }
 };
 
 function extractWeatherData(place) {
   place.fullName = place.name + ',' + place.country;
-  place.tempC = place.temp - 273;
-  place.windMPH = place.wind * (25/11);
+  place.tempC = place.temp - 273.15;
+  place.windMPH = place.wind * (25 / 11);
   return place;
 }
 
@@ -68,8 +73,8 @@ function storageAvailable(type) {
 
 function populateTable(city) {
 
-  var cityWeather = new Weather(city.name, city.sys.country, city.dt,city.main.temp, city.main.humidity, city.wind.speed,city.clouds.all);
-  var cityWeather2 = extractWeatherData(cityWeather);
+  var cityWeather = new City_weather(city.name, city.sys.country, city.dt, city.main.temp, city.main.humidity, city.wind.speed, city.clouds.all);
+  extractWeatherData(cityWeather);
   var tbody = document.getElementById('tbody');
   console.log(city.clouds.all);
   var time = new Date(city.dt);
@@ -81,7 +86,7 @@ function populateTable(city) {
   let td1 = document.createElement('TD');
   //have a problem with date time here. fix it.
   console.log(cityWeather.time);
-  td1.innerText =time.getDate() + ":" + time.getMonth() + ":" + time.getUTCFullYear()+':'+time.getHours()+':'+time.getMinutes()+':'+time.getSeconds();
+  td1.innerText = time.getDate() + ":" + time.getMonth() + ":" + time.getUTCFullYear() + ':' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
   let td2 = document.createElement('TD');
   td2.innerText = cityWeather.tempC;
   let td3 = document.createElement('TD');
@@ -90,42 +95,67 @@ function populateTable(city) {
   td4.innerText = cityWeather.windMPH;
   let td5 = document.createElement('TD');
   td5.innerText = cityWeather.cloudiness;
-  tr.appendChild(td);tr.appendChild(td1);tr.appendChild(td2);tr.appendChild(td3);tr.appendChild(td4);tr.appendChild(td5);
+  tr.appendChild(td);
+  tr.appendChild(td1);
+  tr.appendChild(td2);
+  tr.appendChild(td3);
+  tr.appendChild(td4);
+  tr.appendChild(td5);
   tbody.appendChild(tr);
 }
-function populateTableFromLocalStorage(){
-  var arr = {};
-   arr = JSON.parse(localStorage.getItem('weather'));
-  populateTable(arr.city1);
-  populateTable(arr.city2);
+
+function populateTableFromLocalStorage() {
+  WEATHER_DATA = JSON.parse(localStorage.getItem('weather'));
+  for (var index in WEATHER_DATA) {
+    populateTable(WEATHER_DATA[index]);
+  }
 }
-function calculateStats(){
+
+function calculateStats() {
 
 }
 
+function addButtonClicked(){
+  console.log('Button clicked, verify for input sanity');
+  var cityName = document.getElementById('cities-list').value;
+  if(!cityName || cityName.length == 0){
+    alert('wow, please dont do that');
+  }else{
+    addACity(cityName);
+  }
+}
+
+function addACity(cityName){
+  makeHttpCall(CITY_WEATHER_URL+cityName+ API_KEY, function(city){
+    populateTable(JSON.parse(city));
+    WEATHER_DATA.push(JSON.parse(city));
+    console.log('updating localStorage');
+    console.log(WEATHER_DATA);
+    localStorage.setItem('weather', JSON.stringify(WEATHER_DATA));
+  });
+}
 function init() {
   //check for localStorage -> if it exists, populate data in the table from the
   console.log('init module started');
-  document.getElementById('cities-list').addEventListener('input', function (event) {
+  document.getElementById('cities-list').addEventListener('input', function(event) {
     console.log('changed');
     console.log(event.target.value);
   });
   if (storageAvailable('localStorage')) {
     console.log('local storage is supported');
     if (localStorage.getItem('weather')) {
+      console.log('populating table from localStorage');
       populateTableFromLocalStorage();
     } else {
-      let weather = {};
-
-      makeHttpCall('http://api.openweathermap.org/data/2.5/weather?q=Phoenix&APPID=9c1cd66b77e2f2317d15fffb64eeef6e', function(city1) {
+      makeHttpCall(CITY_WEATHER_URL+'Phoenix'+ API_KEY, function(city1) {
         populateTable(JSON.parse(city1));
-        weather.city1 = JSON.parse(city1);
-        makeHttpCall('http://api.openweathermap.org/data/2.5/weather?q=Bangalore&APPID=9c1cd66b77e2f2317d15fffb64eeef6e', function(city2) {
+        WEATHER_DATA.push(JSON.parse(city1));
+        makeHttpCall(CITY_WEATHER_URL+'Bangalore'+ API_KEY, function(city2) {
           populateTable(JSON.parse(city2));
-          weather.city2 = JSON.parse(city2);
+          WEATHER_DATA.push(JSON.parse(city2));
           console.log('storing object to local storage');
-          console.log(weather);
-          localStorage.setItem('weather', JSON.stringify(weather));
+          console.log(WEATHER_DATA);
+          localStorage.setItem('weather', JSON.stringify(WEATHER_DATA));
         });
       });
     }

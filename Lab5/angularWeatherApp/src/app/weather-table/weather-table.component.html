@@ -10,7 +10,10 @@
       <th>Cloudiness in %</th>
     </tr>
     </thead>
-    <tbody id='tbody'>
+    <tbody id='tbody' *ngIf="_weatherData && _weatherData.length">
+    <tr *ngFor='let city of _weatherData'>
+      <td>{{ city.name }}</td>
+    </tr>
     </tbody>
   </table>
 </div>

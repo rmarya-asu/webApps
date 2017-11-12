@@ -28,15 +28,52 @@
         <!-- Navigation -->
         <nav class="mdl-navigation">
           <a class="mdl-navigation__link" href="">Home</a>
-          <a class="mdl-navigation__link" href="">About</a>
+          <a class="" href="">About</a>
         </nav>
       </div>
     </header>
     <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">Weather</span>
+      <span class="mdl-layout-title">Preferences</span>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="">Phoenix</a>
-        <a class="mdl-navigation__link" href="">Bangalore</a>
+        <a class="mdl-navigation__link" href="">
+          <!--  -->
+          Temperature
+          <input class="mdl-textfield__input" list="temp" type="text" id="temp-list">
+          <datalist id="temp">
+           <option value="Celcius">
+             <option value="Farenheit">
+               <option value="Kelvin">
+         </datalist>
+          <!--  -->
+        </a>
+        <a class="mdl-navigation__link" href="">
+          Date and Time
+          <input class="mdl-textfield__input" list="time" type="text" id="date-list" >
+          <datalist id="time">
+            <option value="UTC">
+              <option value="LocalTime">
+                <option value="TimeDiff">
+          </datalist>
+        </a>
+        <a class="mdl-navigation__link" href="">
+          Wind Speed
+          <input class="mdl-textfield__input" list="wind" type="text" id="Wind-list" >
+          <datalist id="wind">
+            <option value="MPH">
+              <option value="KmPH">
+                <option value="MPS">
+          </datalist>
+        </a>
+        <a class="mdl-navigation__link" href="">
+          <!-- Primary-colored flat button -->
+          <button class="mdl-button mdl-js-button mdl-button--primary">
+            Save Changes
+            </button>
+          <!-- Accent-colored flat button -->
+          <button class="mdl-button mdl-js-button mdl-button--accent">
+            Use Defaults
+          </button>
+        </a>
       </nav>
     </div>
     <main class="mdl-layout__content">
@@ -81,7 +118,7 @@
             <div class="">
               <hr>
               <!-- Accent-colored raised button with ripple -->
-              <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+              <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" onclick="refresh()">
                   Refresh Table Data
               </button>
             </div>
@@ -89,9 +126,9 @@
           <div class="weatherSummary mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet">
             <h5>Summary</h5>
           </div>
-        <!-- /PAGE CONTENT -->
-      </div>
-      <script src="./lab5.js"></script>
+          <!-- /PAGE CONTENT -->
+        </div>
+        <script src="./lab5.js"></script>
 </body>
 
 </html>

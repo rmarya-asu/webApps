@@ -1,6 +1,12 @@
 // 9c1cd66b77e2f2317d15fffb64eeef6e
 // 8988eae58b1eefdc66b197363ade25ab
 var WEATHER_DATA = [];
+var USER_PREF = {
+  temp: 'C',
+  wind: 'mph',
+  time: 'UTC'
+};
+
 const CITY_WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=';
 const API_KEY = '&APPID=9c1cd66b77e2f2317d15fffb64eeef6e';
 
@@ -12,16 +18,16 @@ var City_weather = function(city, country, time, temp, humidity, windSpeed, clou
   this.wind = parseInt(windSpeed);
   this.cloudiness = parseInt(cloudiness);
   this.time = time;
-
-  function setFormats() {
-
-  }
 };
 
 function extractWeatherData(place) {
   place.fullName = place.name + ',' + place.country;
   place.tempC = place.temp - 273.15;
+  place.temp.toFixed(2);
+  place.tempC.toFixed(2);
   place.windMPH = place.wind * (25 / 11);
+  place.windMPH.toFixed(2);
+  place.wind.toFixed(2);
   return place;
 }
 
@@ -33,6 +39,7 @@ function getRequestObject() {
   }
 }
 
+function compareTimeStamp(a,b){ return a.time-b.time;}
 // Make an HTTP request to the given address.
 function makeHttpCall(address, next) {
   var request = getRequestObject();
@@ -88,10 +95,17 @@ function populateTable(city) {
   console.log(cityWeather.time);
   td1.innerText = time.getDate() + ":" + time.getMonth() + ":" + time.getUTCFullYear() + ':' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
   let td2 = document.createElement('TD');
+  let x = parseInt(cityWeather.tempC);
+  x.toFixed(2);
+  cityWeather.tempC = x;
   td2.innerText = cityWeather.tempC;
   let td3 = document.createElement('TD');
   td3.innerText = cityWeather.humidity;
   let td4 = document.createElement('TD');
+  cityWeather.windMPH.toFixed(2);
+  let y = parseInt(cityWeather.windMPH);
+  y.toFixed(2);
+  cityWeather.windMPH = y;
   td4.innerText = cityWeather.windMPH;
   let td5 = document.createElement('TD');
   td5.innerText = cityWeather.cloudiness;
@@ -134,6 +148,21 @@ function addACity(cityName){
     localStorage.setItem('weather', JSON.stringify(WEATHER_DATA));
   });
 }
+
+function emptyElement(element){
+  var i = element.childNodes.length;
+  while(i--){
+    element.removeChild(element.lastChild);
+  }
+}
+
+function refresh(){
+  WEATHER_DATA.sort();
+  emptyElement(document.getElementById('tbody'));
+  // localStorage.setItem('weather', JSON.stringify(WEATHER_DATA));
+  // populateTableFromLocalStorage();
+}
+
 function init() {
   //check for localStorage -> if it exists, populate data in the table from the
   console.log('init module started');

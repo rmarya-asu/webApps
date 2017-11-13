@@ -2,6 +2,7 @@
 // 8988eae58b1eefdc66b197363ade25ab
 var WEATHER_DATA = [];
 var USER_PREF = {};
+var CITIES = ['Phoenix','Bangalore'];
 const CITY_WEATHER_URL = 'http://api.openweathermap.org/data/2.5/weather?q=';
 const API_KEY = '&APPID=9c1cd66b77e2f2317d15fffb64eeef6e';
 
@@ -182,18 +183,37 @@ function emptyElement(element){
   }
 }
 
+function calculateStats(){
+  let totalTemp = 0;
+  let totalHumidity = 0;
+  for (var ind in WEATHER_DATA) {
+    totalTemp += parseInt(WEATHER_DATA[ind].main.temp);
+    totalHumidity += parseInt(WEATHER_DATA[ind].main.humidity);
+  }
+  console.log(totalTemp);
+  console.log(WEATHER_DATA.length);
+  var averageTemp = totalTemp/(WEATHER_DATA.length);
+  var averageHumidity = totalHumidity/WEATHER_DATA.length;
+  console.log(averageTemp);
+}
+
 function refresh(){
   WEATHER_DATA.sort();
-  convertToPrefs();
-  emptyElement(document.getElementById('tbody'));
+  //convertToPrefs();
+  //emptyElement(document.getElementById('tbody'));
+  calculateStats()
   // localStorage.setItem('weather', JSON.stringify(WEATHER_DATA));
   // populateTableFromLocalStorage();
 }
 
 function updateNavBarUserPrefs(){
   document.getElementById('userTempSettings').innerHTML = USER_PREF.temp;
+  document.getElementById('tempTableH').innerHTML = USER_PREF.temp;
   document.getElementById('userWindSettings').innerHTML = USER_PREF.wind;
+  document.getElementById('windTableH').innerHTML = USER_PREF.wind;
   document.getElementById('userTimeSettings').innerHTML = USER_PREF.time;
+  document.getElementById('timeTableH').innerHTML = USER_PREF.time;
+
 }
 
 function init() {
@@ -209,6 +229,7 @@ function init() {
       USER_PREF = JSON.parse(localStorage.getItem('USER_PREF'));
     }
     else{
+      //default user setting
        USER_PREF = {
         temp: 'Farenheit',
         wind: 'mph',
@@ -222,10 +243,10 @@ function init() {
       populateTableFromLocalStorage();
       updateNavBarUserPrefs();
     } else {
-      makeHttpCall(CITY_WEATHER_URL+'Phoenix'+ API_KEY, function(city1) {
+      makeHttpCall(CITY_WEATHER_URL+CITIES[0]+ API_KEY, function(city1) {
         populateTable(JSON.parse(city1));
         WEATHER_DATA.push(JSON.parse(city1));
-        makeHttpCall(CITY_WEATHER_URL+'Bangalore'+ API_KEY, function(city2) {
+        makeHttpCall(CITY_WEATHER_URL+CITIES[1]+ API_KEY, function(city2) {
           populateTable(JSON.parse(city2));
           WEATHER_DATA.push(JSON.parse(city2));
           console.log('storing object to local storage');
